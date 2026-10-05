@@ -1,0 +1,47 @@
+{
+  "name": "@tently/mcp",
+  "version": "0.1.1",
+  "description": "Tently in your coding agent: an MCP server that checks your team's decisions before the agent writes code.",
+  "keywords": ["mcp", "model-context-protocol", "claude-code", "cursor", "code-review", "ai-agents", "tently"],
+  "homepage": "https://tently.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tently-team/tently-mcp.git"
+  },
+  "bugs": "https://github.com/tently-team/tently-mcp/issues",
+  "license": "MIT",
+  "mcpName": "io.github.tently-team/tently-mcp",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "tently": "./dist/cli.js"
+  },
+  "files": ["dist", "!dist/**/*.test.*", "README.md", "LICENSE"],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+  },
+  "dependencies": {
+    "@colbymchenry/codegraph": "1.6.0",
+    "@modelcontextprotocol/sdk": "1.29.0",
+    "commander": "13.1.0",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.5",
+    "typescript": "5.7.3",
+    "vitest": "3.0.2"
+  }
+}

@@ -1,0 +1,5 @@
+node_modules/
+dist/
+.codegraph/
+*.tgz
+.DS_Store

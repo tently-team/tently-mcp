@@ -1,0 +1,34 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "name": "io.github.tently-team/tently-mcp",
+  "title": "Tently",
+  "description": "Checks your team's architecture decisions before your coding agent writes code.",
+  "repository": {
+    "url": "https://github.com/tently-team/tently-mcp",
+    "source": "github"
+  },
+  "websiteUrl": "https://tently.dev",
+  "version": "0.1.1",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@tently/mcp",
+      "version": "0.1.1",
+      "transport": { "type": "stdio" },
+      "packageArguments": [{ "type": "positional", "value": "mcp" }],
+      "environmentVariables": [
+        {
+          "name": "TENTLY_API_KEY",
+          "description": "Tently workspace API key, from the Connect page at app.tently.dev",
+          "isRequired": true,
+          "isSecret": true
+        },
+        {
+          "name": "TENTLY_API_URL",
+          "description": "Tently API origin (default https://api.tently.dev)",
+          "isRequired": false
+        }
+      ]
+    }
+  ]
+}
