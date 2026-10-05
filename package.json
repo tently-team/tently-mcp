@@ -2,7 +2,15 @@
   "name": "@tently/mcp",
   "version": "0.1.1",
   "description": "Tently in your coding agent: an MCP server that checks your team's decisions before the agent writes code.",
-  "keywords": ["mcp", "model-context-protocol", "claude-code", "cursor", "code-review", "ai-agents", "tently"],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "claude-code",
+    "cursor",
+    "code-review",
+    "ai-agents",
+    "tently"
+  ],
   "homepage": "https://tently.dev",
   "repository": {
     "type": "git",
@@ -21,14 +29,19 @@
     }
   },
   "bin": {
-    "tently": "./dist/cli.js"
+    "tently": "dist/cli.js"
   },
-  "files": ["dist", "!dist/**/*.test.*", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "!dist/**/*.test.*",
+    "README.md",
+    "LICENSE"
+  ],
   "engines": {
     "node": ">=20"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && chmod +x dist/cli.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "prepublishOnly": "npm run typecheck && npm test && npm run build"
