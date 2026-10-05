@@ -1,0 +1,26 @@
+name: MCP Registry
+
+# Publishes server.json to the official MCP Registry. Runs after a GitHub release is
+# published, or by hand. Authenticates as this repo through GitHub OIDC, which is how
+# the registry grants the io.github.tently-team/* namespace (no secret needed).
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install mcp-publisher
+        run: |
+          curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
+      - name: Check server.json matches package.json
+        run: test "$(jq -r .version server.json)" = "$(jq -r .version package.json)"
+      - run: ./mcp-publisher login github-oidc
+      - run: ./mcp-publisher publish
