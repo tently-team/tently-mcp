@@ -1,6 +1,6 @@
 {
   "name": "@tently/mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Tently in your coding agent: an MCP server that checks your team's decisions before the agent writes code.",
   "keywords": [
     "mcp",
