@@ -47,6 +47,13 @@ export const queryImpactZoneInputSchema = z.object({
 export interface ToolDefinition {
   name: string;
   description: string;
+  annotations: {
+    title: string;
+    readOnlyHint: boolean;
+    destructiveHint: boolean;
+    idempotentHint: boolean;
+    openWorldHint: boolean;
+  };
   inputSchema: {
     type: 'object';
     properties: Record<string, unknown>;
@@ -66,6 +73,14 @@ export const toolDefinitions: ToolDefinition[] = [
       'writing or changing code in an area to surface constraints and exemplars that apply, ' +
       'so you build with the grain instead of triggering a review finding later. Pass the ' +
       'paths you are about to touch to scope retrieval.',
+    annotations: {
+      title: 'Search Tently decisions',
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      // Calls the Tently API over the network.
+      openWorldHint: true,
+    },
     inputSchema: {
       type: 'object',
       properties: {
@@ -98,6 +113,15 @@ export const toolDefinitions: ToolDefinition[] = [
       'impact list is NOT proof the change is safe; callers bound via interfaces, dynamic ' +
       'dispatch, or re-exports are routinely missed. Corroborate a low result (grep + read) ' +
       'before concluding there is no blast radius. Heed the `boundaries` and `epistemic` fields.',
+    annotations: {
+      title: 'Query impact zone',
+      // Builds the local code-graph index in the checkout's `.codegraph/` directory.
+      readOnlyHint: false,
+      destructiveHint: false,
+      idempotentHint: true,
+      // Runs entirely on the local working tree.
+      openWorldHint: false,
+    },
     inputSchema: {
       type: 'object',
       properties: {
