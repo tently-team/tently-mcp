@@ -4,6 +4,7 @@
 [![CI](https://github.com/tently-team/tently-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/tently-team/tently-mcp/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Listed on mcpservers.org](https://mcpservers.org/badge.svg)](https://mcpservers.org/servers/tently-team/tently-mcp)
+[![M8ven Score](https://m8ven.ai/badge/mcp/tently-team/tently-mcp)](https://m8ven.ai/mcp/tently-team/tently-mcp)
 
 Tently in your coding agent. An [MCP](https://modelcontextprotocol.io) server for Claude Code and
 Cursor that checks your team's decisions (the rules [Tently](https://tently.dev) learned from
