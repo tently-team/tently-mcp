@@ -22,5 +22,16 @@ jobs:
           curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
       - name: Check server.json matches package.json
         run: test "$(jq -r .version server.json)" = "$(jq -r .version package.json)"
+      # A release triggers this and publish.yml together, and npm takes a few minutes to
+      # serve a new version; the registry rejects one it can't see yet. Wait up to 15 min.
+      - name: Wait for the version on npm
+        run: |
+          v="$(jq -r .version package.json)"
+          for _ in $(seq 1 45); do
+            curl -fs "https://registry.npmjs.org/@tently%2fmcp/$v" >/dev/null && exit 0
+            sleep 20
+          done
+          echo "@tently/mcp@$v never appeared on npm" >&2
+          exit 1
       - run: ./mcp-publisher login github-oidc
       - run: ./mcp-publisher publish
