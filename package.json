@@ -1,13 +1,18 @@
 {
   "name": "@tently/mcp",
-  "version": "0.1.2",
-  "description": "Tently in your coding agent: an MCP server that checks your team's decisions before the agent writes code.",
+  "version": "0.1.3",
+  "description": "MCP server for Tently, the AI code reviewer for GitHub pull requests: your coding agent checks your team's decisions before it writes code.",
   "keywords": [
     "mcp",
     "model-context-protocol",
     "claude-code",
     "cursor",
     "code-review",
+    "ai-code-review",
+    "pull-request",
+    "github",
+    "architecture-decisions",
+    "adr",
     "ai-agents",
     "tently"
   ],

@@ -2,18 +2,18 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.tently-team/tently-mcp",
   "title": "Tently",
-  "description": "Checks your team's architecture decisions before your coding agent writes code.",
+  "description": "Tently, the AI PR reviewer for GitHub: agents check team decisions before they write code.",
   "repository": {
     "url": "https://github.com/tently-team/tently-mcp",
     "source": "github"
   },
   "websiteUrl": "https://tently.dev",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@tently/mcp",
-      "version": "0.1.2",
+      "version": "0.1.3",
       "transport": { "type": "stdio" },
       "packageArguments": [{ "type": "positional", "value": "mcp" }],
       "environmentVariables": [

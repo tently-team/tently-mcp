@@ -1,4 +1,4 @@
-# Tently MCP
+# Tently MCP: AI pull request review, inside your coding agent
 
 [![npm](https://img.shields.io/npm/v/@tently/mcp)](https://www.npmjs.com/package/@tently/mcp)
 [![CI](https://github.com/tently-team/tently-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/tently-team/tently-mcp/actions/workflows/ci.yml)
@@ -6,13 +6,24 @@
 [![Listed on mcpservers.org](https://mcpservers.org/badge.svg)](https://mcpservers.org/servers/tently-team/tently-mcp)
 [![M8ven Score](https://m8ven.ai/badge/mcp/tently-team-tently-mcp-1pwlm6?v=1d89c6db51e6ec540bb78b90dfa8316f)](https://m8ven.ai/mcp/tently-team-tently-mcp-1pwlm6?s=readme)
 
-Tently in your coding agent. An [MCP](https://modelcontextprotocol.io) server for Claude Code and
-Cursor that checks your team's decisions (the rules [Tently](https://tently.dev) learned from
-your pull requests, reviews and docs) before the agent writes code.
+[Tently](https://tently.dev) is an AI code reviewer for GitHub pull requests. It catches the two
+things diff-only reviewers miss: regressions in code that depends on the change, and changes that
+break design decisions your team made on purpose. It learns those decisions from your merged pull
+requests, review threads and docs, and checks every pull request against them.
 
-Coding agents write code fast, but they don't know why your team built things the way it did.
-Tently remembers, and this server gives your agent that memory while it works, before a pull
-request exists.
+This repo is Tently's [MCP](https://modelcontextprotocol.io) server: the same decisions, inside
+Claude Code, Cursor or Codex while the agent writes code, before a pull request exists.
+
+## How the pieces fit
+
+Tently is one decision store with two gates:
+
+| Gate | When | What it does |
+| --- | --- | --- |
+| **Pull request review** ([GitHub App](https://tently.dev)) | Every PR | Posts a check run and inline comments for regressions and decision drift, with the evidence attached |
+| **This MCP server** | While the agent writes | Lets the agent look up the decisions that apply and the blast radius of a change |
+
+The MCP server needs a Tently workspace. Request early access at [tently.dev](https://tently.dev).
 
 ## Set up
 
