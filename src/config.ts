@@ -1,4 +1,5 @@
 import { createRequire } from 'node:module';
+import { parseRepoSlug } from './repo.js';
 
 /**
  * Runtime configuration for the MCP server and CLI.
@@ -30,6 +31,12 @@ export interface McpConfig {
   apiKey?: string;
   /** Working directory CodeGraph indexes for `query_impact_zone`. */
   workingDir: string;
+  /**
+   * `owner/name` of the repo `search_decisions` is scoped to (from
+   * `TENTLY_REPO`). Unset means it is detected from the working directory's
+   * git remotes at startup.
+   */
+  repo?: string;
 }
 
 /** Strip a single trailing slash so path joins stay clean. */
@@ -51,5 +58,8 @@ export function loadConfig(
     apiUrl: normalizeApiUrl(overrides.apiUrl ?? env.TENTLY_API_URL ?? DEFAULT_API_URL),
     apiKey: overrides.apiKey ?? env.TENTLY_API_KEY,
     workingDir,
+    // A URL or a padded value still works; one that doesn't parse is dropped in
+    // favour of detection, since the API would reject it on every search.
+    repo: parseRepoSlug(overrides.repo ?? env.TENTLY_REPO ?? '') ?? undefined,
   };
 }

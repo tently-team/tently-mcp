@@ -64,7 +64,9 @@ repo).
 ## What the agent gets
 
 - **`search_decisions`**: the decisions that apply to the code it's about to change, from your
-  Tently workspace. Each one says whether breaking it is blocking or advisory.
+  Tently workspace. Each one says whether breaking it is blocking or advisory. The search is
+  scoped to the repo you're in (read from the checkout's git remotes), so decisions from your
+  workspace's other repos don't crowd out this one's.
 - **`query_impact_zone`**: the blast radius of a symbol (who calls it, what it depends on),
   computed locally on your checkout with [CodeGraph](https://github.com/colbymchenry/codegraph).
   Your source code never leaves your machine. The index lives in `.codegraph/`, which `init`
@@ -80,10 +82,12 @@ re-exports can be missed, and the tool says so in its output.
 | `TENTLY_API_KEY` | Workspace API key (required for `search_decisions`) |
 | `TENTLY_API_URL` | API origin, default `https://api.tently.dev` |
 | `TENTLY_WORKING_DIR` | Directory `query_impact_zone` indexes, default the current directory |
+| `TENTLY_REPO` | GitHub repo to scope `search_decisions` to, as `owner/name` or a GitHub URL. Default: the `origin` and `upstream` remotes of `TENTLY_WORKING_DIR`, whichever is connected to your workspace (origin first), which covers forks. A value that isn't a GitHub repo is ignored. When no repo is connected (or it was renamed since), the search covers the whole workspace |
 
 ## Privacy
 
-`search_decisions` sends your query text and the file paths you pass to the Tently API. Nothing
+`search_decisions` sends your query text, the file paths you pass and the `owner/name` of the checkout's `origin` and `upstream` remotes to
+the Tently API. Nothing
 else leaves your machine: `query_impact_zone` runs entirely locally. See
 [tently.dev](https://tently.dev) for how Tently handles data.
 
