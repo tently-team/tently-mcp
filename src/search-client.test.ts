@@ -47,6 +47,16 @@ describe('searchDecisions', () => {
     });
   });
 
+  it('sends the repo slug when one is configured', async () => {
+    const fetchImpl = vi.fn(async () => jsonResponse({ decisions: [] }));
+    await searchDecisions(
+      { query: 'x' },
+      { ...opts(fetchImpl as unknown as typeof fetch), repo: 'acme/api' },
+    );
+    const [, init] = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
+    expect(JSON.parse(init.body as string)).toEqual({ query: 'x', repo: 'acme/api' });
+  });
+
   it('returns decisions from a { decisions } body', async () => {
     const decisions = [{ id: 'd1', title: 'api must not import db' }];
     const fetchImpl = vi.fn(async () => jsonResponse({ decisions, total: 1 }));

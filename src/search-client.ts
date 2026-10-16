@@ -5,7 +5,7 @@
  *
  * Contract — `POST {apiUrl}{SEARCH_DECISIONS_PATH}`
  *   headers: `authorization: Bearer <apiKey>`, `content-type: application/json`
- *   body:    { query: string, paths?: string[], limit?: number }
+ *   body:    { query: string, repo?: string, paths?: string[], limit?: number }
  *   200:     { decisions: Decision[], total?: number }
  *   4xx/5xx: any body; treated as a soft failure.
  */
@@ -28,6 +28,8 @@ export interface SearchDecisionsInput {
 export interface SearchClientOptions {
   apiUrl: string;
   apiKey?: string;
+  /** `owner/name` to scope the search to; omitted, the API searches the whole workspace. */
+  repo?: string;
   /** Injectable for tests; defaults to the global `fetch`. */
   fetchImpl?: typeof fetch;
   /** Per-request timeout (ms). Defaults to 10s. */
@@ -75,6 +77,7 @@ export async function searchDecisions(
       },
       body: JSON.stringify({
         query: input.query,
+        ...(opts.repo ? { repo: opts.repo } : {}),
         ...(input.paths?.length ? { paths: input.paths } : {}),
         ...(input.limit !== undefined ? { limit: input.limit } : {}),
       }),

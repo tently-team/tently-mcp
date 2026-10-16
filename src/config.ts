@@ -30,6 +30,11 @@ export interface McpConfig {
   apiKey?: string;
   /** Working directory CodeGraph indexes for `query_impact_zone`. */
   workingDir: string;
+  /**
+   * `owner/name` of the repo `search_decisions` is scoped to. Unset means it is
+   * detected from the working directory's `origin` remote at startup.
+   */
+  repo?: string;
 }
 
 /** Strip a single trailing slash so path joins stay clean. */
@@ -51,5 +56,6 @@ export function loadConfig(
     apiUrl: normalizeApiUrl(overrides.apiUrl ?? env.TENTLY_API_URL ?? DEFAULT_API_URL),
     apiKey: overrides.apiKey ?? env.TENTLY_API_KEY,
     workingDir,
+    repo: overrides.repo ?? env.TENTLY_REPO,
   };
 }
