@@ -65,7 +65,7 @@ repo).
 
 - **`search_decisions`**: the decisions that apply to the code it's about to change, from your
   Tently workspace. Each one says whether breaking it is blocking or advisory. The search is
-  scoped to the repo you're in (read from the checkout's `origin` remote), so decisions from your
+  scoped to the repo you're in (read from the checkout's git remotes), so decisions from your
   workspace's other repos don't crowd out this one's.
 - **`query_impact_zone`**: the blast radius of a symbol (who calls it, what it depends on),
   computed locally on your checkout with [CodeGraph](https://github.com/colbymchenry/codegraph).
@@ -82,7 +82,7 @@ re-exports can be missed, and the tool says so in its output.
 | `TENTLY_API_KEY` | Workspace API key (required for `search_decisions`) |
 | `TENTLY_API_URL` | API origin, default `https://api.tently.dev` |
 | `TENTLY_WORKING_DIR` | Directory `query_impact_zone` indexes, default the current directory |
-| `TENTLY_REPO` | `owner/name` to scope `search_decisions` to, default the `origin` remote of `TENTLY_WORKING_DIR`. Without one, the search covers the whole workspace |
+| `TENTLY_REPO` | GitHub repo to scope `search_decisions` to, as `owner/name` or a GitHub URL. Default: the `upstream` remote of `TENTLY_WORKING_DIR` if it has one (a fork), else `origin`. A value that isn't a GitHub repo is ignored. When the repo isn't connected to your workspace (or was renamed since), the search covers the whole workspace |
 
 ## Privacy
 
