@@ -44,17 +44,20 @@ function remoteUrl(cwd: string, remote: string): Promise<string | undefined> {
 }
 
 /**
- * The GitHub repo of the checkout at `cwd`. Tries `upstream` before `origin`:
- * in a fork, `origin` is the contributor's copy and `upstream` is the repo the
- * team connected to Tently. Resolves undefined when neither gives a GitHub
- * slug (not a git checkout, git missing, another host); the search then runs
- * workspace-wide.
+ * The checkout's GitHub repos at `cwd`, as candidate slugs in preference order:
+ * `origin`, then `upstream`. The API scopes the search to the first one
+ * connected to the workspace, which covers both fork shapes: a contributor's
+ * fork (origin is their copy, upstream is connected) and a team's fork of an
+ * open-source project (origin is connected, upstream is not). Empty when
+ * neither gives a GitHub slug (not a git checkout, git missing, another host);
+ * the search then runs workspace-wide.
  */
-export async function detectRepo(cwd: string): Promise<string | undefined> {
-  for (const remote of ['upstream', 'origin']) {
+export async function detectRepos(cwd: string): Promise<string[]> {
+  const slugs: string[] = [];
+  for (const remote of ['origin', 'upstream']) {
     const url = await remoteUrl(cwd, remote);
     const slug = url ? parseRepoSlug(url) : null;
-    if (slug) return slug;
+    if (slug && !slugs.includes(slug)) slugs.push(slug);
   }
-  return undefined;
+  return slugs;
 }

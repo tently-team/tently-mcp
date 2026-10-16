@@ -82,11 +82,11 @@ re-exports can be missed, and the tool says so in its output.
 | `TENTLY_API_KEY` | Workspace API key (required for `search_decisions`) |
 | `TENTLY_API_URL` | API origin, default `https://api.tently.dev` |
 | `TENTLY_WORKING_DIR` | Directory `query_impact_zone` indexes, default the current directory |
-| `TENTLY_REPO` | GitHub repo to scope `search_decisions` to, as `owner/name` or a GitHub URL. Default: the `upstream` remote of `TENTLY_WORKING_DIR` if it has one (a fork), else `origin`. A value that isn't a GitHub repo is ignored. When the repo isn't connected to your workspace (or was renamed since), the search covers the whole workspace |
+| `TENTLY_REPO` | GitHub repo to scope `search_decisions` to, as `owner/name` or a GitHub URL. Default: the `origin` and `upstream` remotes of `TENTLY_WORKING_DIR`, whichever is connected to your workspace (origin first), which covers forks. A value that isn't a GitHub repo is ignored. When no repo is connected (or it was renamed since), the search covers the whole workspace |
 
 ## Privacy
 
-`search_decisions` sends your query text, the file paths you pass and the repo's `owner/name` to
+`search_decisions` sends your query text, the file paths you pass and the `owner/name` of the checkout's `origin` and `upstream` remotes to
 the Tently API. Nothing
 else leaves your machine: `query_impact_zone` runs entirely locally. See
 [tently.dev](https://tently.dev) for how Tently handles data.

@@ -12,7 +12,7 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 import { type McpConfig, VERSION } from './config.js';
 import { LocalImpactZone } from './impact.js';
-import { detectRepo } from './repo.js';
+import { detectRepos } from './repo.js';
 import { searchDecisions } from './search-client.js';
 import {
   QUERY_IMPACT_ZONE_TOOL,
@@ -29,13 +29,13 @@ const SERVER_VERSION = VERSION;
 /** Build the tool context (network + local code graph) from runtime config. */
 export function createToolContext(config: McpConfig): ToolContext {
   // Detected once, in the background, so startup never waits on git.
-  const repo = config.repo ? Promise.resolve(config.repo) : detectRepo(config.workingDir);
+  const repos = config.repo ? Promise.resolve([config.repo]) : detectRepos(config.workingDir);
   return {
     searchDecisions: async (input) =>
       searchDecisions(input, {
         apiUrl: config.apiUrl,
         apiKey: config.apiKey,
-        repo: await repo,
+        repos: await repos,
       }),
     impactZone: new LocalImpactZone({ cwd: config.workingDir }),
   };

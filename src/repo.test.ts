@@ -3,7 +3,7 @@ import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { detectRepo, parseRepoSlug } from './repo.js';
+import { detectRepos, parseRepoSlug } from './repo.js';
 
 describe('parseRepoSlug', () => {
   it.each([
@@ -33,7 +33,7 @@ describe('parseRepoSlug', () => {
   });
 });
 
-describe('detectRepo', () => {
+describe('detectRepos', () => {
   function checkout(remotes: Record<string, string>): string {
     const dir = mkdtempSync(join(tmpdir(), 'tently-repo-'));
     execFileSync('git', ['init', '-q'], { cwd: dir });
@@ -43,26 +43,34 @@ describe('detectRepo', () => {
     return dir;
   }
 
-  it('resolves undefined outside a git checkout', async () => {
+  it('is empty outside a git checkout', async () => {
     const dir = mkdtempSync(join(tmpdir(), 'tently-repo-'));
-    await expect(detectRepo(dir)).resolves.toBeUndefined();
+    await expect(detectRepos(dir)).resolves.toEqual([]);
   });
 
   it('reads origin', async () => {
     const dir = checkout({ origin: 'git@github.com:acme/api.git' });
-    await expect(detectRepo(dir)).resolves.toBe('acme/api');
+    await expect(detectRepos(dir)).resolves.toEqual(['acme/api']);
   });
 
-  it('prefers upstream in a fork', async () => {
+  it('lists origin before upstream, so the API can take the first connected one', async () => {
     const dir = checkout({
       origin: 'https://github.com/me/api.git',
       upstream: 'https://github.com/acme/api.git',
     });
-    await expect(detectRepo(dir)).resolves.toBe('acme/api');
+    await expect(detectRepos(dir)).resolves.toEqual(['me/api', 'acme/api']);
   });
 
-  it('resolves undefined for a non-GitHub remote', async () => {
+  it('lists a repo once when origin and upstream agree', async () => {
+    const dir = checkout({
+      origin: 'git@github.com:acme/api.git',
+      upstream: 'https://github.com/acme/api',
+    });
+    await expect(detectRepos(dir)).resolves.toEqual(['acme/api']);
+  });
+
+  it('skips a non-GitHub remote', async () => {
     const dir = checkout({ origin: 'https://gitlab.com/group/sub/api.git' });
-    await expect(detectRepo(dir)).resolves.toBeUndefined();
+    await expect(detectRepos(dir)).resolves.toEqual([]);
   });
 });

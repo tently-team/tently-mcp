@@ -32,8 +32,9 @@ export interface McpConfig {
   /** Working directory CodeGraph indexes for `query_impact_zone`. */
   workingDir: string;
   /**
-   * `owner/name` of the repo `search_decisions` is scoped to. Unset means it is
-   * detected from the working directory's git remotes at startup.
+   * `owner/name` of the repo `search_decisions` is scoped to (from
+   * `TENTLY_REPO`). Unset means it is detected from the working directory's
+   * git remotes at startup.
    */
   repo?: string;
 }

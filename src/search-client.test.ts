@@ -47,14 +47,14 @@ describe('searchDecisions', () => {
     });
   });
 
-  it('sends the repo slug when one is configured', async () => {
+  it('sends the candidate repo slugs when there are any', async () => {
     const fetchImpl = vi.fn(async () => jsonResponse({ decisions: [] }));
     await searchDecisions(
       { query: 'x' },
-      { ...opts(fetchImpl as unknown as typeof fetch), repo: 'acme/api' },
+      { ...opts(fetchImpl as unknown as typeof fetch), repos: ['me/api', 'acme/api'] },
     );
     const [, init] = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
-    expect(JSON.parse(init.body as string)).toEqual({ query: 'x', repo: 'acme/api' });
+    expect(JSON.parse(init.body as string)).toEqual({ query: 'x', repos: ['me/api', 'acme/api'] });
   });
 
   it('returns decisions from a { decisions } body', async () => {
