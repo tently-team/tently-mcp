@@ -5,6 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Listed on mcpservers.org](https://mcpservers.org/badge.svg)](https://mcpservers.org/servers/tently-team/tently-mcp)
 [![M8ven Score](https://m8ven.ai/badge/mcp/tently-team-tently-mcp-1pwlm6?v=1d89c6db51e6ec540bb78b90dfa8316f)](https://m8ven.ai/mcp/tently-team-tently-mcp-1pwlm6?s=readme)
+[![tently-team/tently-mcp MCP server](https://glama.ai/mcp/servers/tently-team/tently-mcp/badges/score.svg)](https://glama.ai/mcp/servers/tently-team/tently-mcp)
 
 [Tently](https://tently.dev) is an AI code reviewer for GitHub pull requests. It catches the two
 things diff-only reviewers miss: regressions in code that depends on the change, and changes that
